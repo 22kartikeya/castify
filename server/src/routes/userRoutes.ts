@@ -10,9 +10,9 @@ const router = express.Router();
 
 const cookieOptions = {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax" as const,
-    maxAge: 7 * 60 * 60 * 1000
+    secure: false, // secure: process.env.NODE_ENV === "production", // true for HTTPS in prod
+    sameSite: "lax" as const, // sameSite: "strict", prevent CSRF in prod
+    maxAge: 7 * 60 * 60 * 1000 // 7 hours
 }
 
 router.post('/signup', async (req: Request, res: Response) => {
@@ -57,7 +57,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 })
 
-router.post('/logout', (req, res) => {
+router.post('/logout', (req: Request, res: Response) => {
     res.clearCookie("token");
     return res.status(200).json({message: "Logout Successfully"})
 })

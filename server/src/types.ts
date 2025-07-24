@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export enum Roles{
     USER = "user",
     EMPLOYEE= "employee",
@@ -10,3 +12,10 @@ export interface UserInterface {
     password: string,
     role: Roles
 }
+
+export interface AuthRequest extends Request {
+    user?: {
+      id: Object;
+      role: Roles;
+    };
+  }
