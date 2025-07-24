@@ -3,7 +3,8 @@ import cors from "cors"
 import { mongo_url, PORT } from "./config";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoutes"
+import { userRouter } from "./routes/userRoutes"
+import { broadcastRouter } from "./routes/broadcastRoutes";
 const app = express();
 app.use(express.json());
 app.use(cors()); // TODO: add specific frontend domain to access backend
@@ -12,7 +13,8 @@ app.use(cors()); // TODO: add specific frontend domain to access backend
 
 app.use(cookieParser());
 
-app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRouter);
+app.use('/api/send', broadcastRouter);
 
 const startServer = async() => {
     try{

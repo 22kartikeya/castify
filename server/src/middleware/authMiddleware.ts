@@ -9,7 +9,7 @@ type customPayload = {
 }
 
 export const authMiddleware = (allowedRoles: string[] = []) => (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token: string = req.cookies?.token;
+    const token = req.cookies?.token;
     if(!token) return res.status(401).json({message: "Unauthorized"});
     let decodedToken: customPayload | undefined;
     for(const role of Object.keys(secrets) as Array<keyof typeof secrets>){

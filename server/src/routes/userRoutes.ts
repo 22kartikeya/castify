@@ -62,4 +62,4 @@ router.post('/logout', (req: Request, res: Response) => {
     return res.status(200).json({message: "Logout Successfully"})
 })
 
-export default router;
+export const userRouter = router;
