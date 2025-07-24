@@ -8,6 +8,6 @@ const broadcastSchema = new Schema({
     type: {type: String, enum: ['popup', 'banner'], default: 'banner'},
     status: {type: String, enum: ['active', 'expired'], default: 'active'},
     recipients: [{type: mongoose.Types.ObjectId, ref: 'User'}]
-});
+}, {timestamps: true});
 
 export const broadcastModel = mongoose.model('Broadcast', broadcastSchema);

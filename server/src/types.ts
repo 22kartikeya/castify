@@ -1,5 +1,12 @@
 export enum Roles{
     USER = "user",
     EMPLOYEE= "employee",
-    ADMIN= "amin"
+    ADMIN= "admin"
+}
+
+export interface UserInterface {
+    _id: Object,
+    email: string,
+    password: string,
+    role: Roles
 }
