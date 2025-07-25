@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { AuthRequest } from '../types';
 import { broadcastModel } from '../models/broadcast';
@@ -17,8 +17,8 @@ router.get('/broadcast', authMiddleware(), async (req: AuthRequest, res: Respons
             role: role,
             status: 'active',
             _id: { $nin: user.broadcastId }
-        }).sort({createdAt: -1});
-        if (!allBroadcast) return res.status(204).send();
+        }).sort({createdAt: -1}).lean();
+        if (!allBroadcast.length) return res.status(204).send();
         return res.status(200).json({
             allBroadcast: allBroadcast.map (b => ({
                 message: b.message,
