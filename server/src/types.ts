@@ -1,4 +1,6 @@
 import { Request } from "express";
+import {z} from 'zod';
+import { broadcastSchema } from './validations/broadcastValidation';
 
 export enum Roles{
     USER = "user",
@@ -14,8 +16,10 @@ export interface UserInterface {
 }
 
 export interface AuthRequest extends Request {
-    user?: {
-      id: Object;
-      role: Roles;
-    };
-  }
+  user?: {
+    id: Object;
+    role: Roles;
+  };
+}
+
+export type broadcastType = z.infer<typeof broadcastSchema>;
