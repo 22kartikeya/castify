@@ -1,42 +1,36 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { loginSchema, type LoginType } from "../lib/login.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting},
+  } = useForm<LoginType>({
+    resolver: zodResolver(loginSchema)
+  });
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/site/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true, // This enables cookie handling
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
+    try{
+        switch (role) {
+          case "admin":
+            navigate("/AdminDashboard");
+            break;
+          case "employee":
+            navigate("/EmployeeDashboard");
+            break;
+          case "user":
+            navigate("/UserDashboard");
+            break;
         }
-      );
-
-      const { role } = response.data; // Get role directly from response instead of JWT
-
-      switch (role) {
-        case "admin":
-          navigate("/AdminDashboard");
-          break;
-        case "employee":
-          navigate("/EmployeeDashboard");
-          break;
-        case "user":
-          navigate("/UserDashboard");
-          break;
-      }
-      console.log(`Logged in as: ${email}`);
-    } catch (e) {
-      console.log(`Login failed: ${e.message}`);
+    }catch(e){
+        setError("root", {
+          message: "Invalid email or password",
+        });
     }
   };
 
@@ -50,54 +44,72 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
+                  {...register("email")}
                   type="email"
                   required
                   autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-slate-700 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-500 sm:text-sm/6"
                 />
+                {errors.email && (
+                  <div className="text-red-500 text-sm mt-1">
+                    *{errors.email.message}
+                  </div>
+                )}
               </div>
             </div>
 
             <div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
+                  {...register("password")}
                   type="password"
                   required
                   autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-slate-700 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-500 sm:text-sm/6"
                 />
+                {errors.password && (
+                  <div className="text-red-500 text-sm mt-1">
+                    *{errors.password.message}
+                  </div>
+                )}
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-gradient-to-b from-orange-500 to-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs cursor-pointertransition-all duration-300 hover:from-amber-400 hover:to-orange-500"
+                className="flex w-full justify-center rounded-md bg-gradient-to-b from-orange-500 to-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs cursor-pointer transition-all duration-300 hover:from-amber-400 hover:to-orange-500"
+                disabled={isSubmitting}
               >
-                Log In
+                {isSubmitting ? "Loading..." : "Log In"}
               </button>
+              {errors.root && (
+                <div className="text-red-500 text-sm mt-1">
+                  *{errors.root.message}
+                </div>
+              )}
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm/6 text-gray-500">
+          <p className="mt-10 text-center text-sm/6 text-slate-300">
             Don't have an account?{" "}
             <button
               onClick={() => navigate("/signup")}
-              className="font-semibold text-gray-700"
+              className="relative text-slate-200 px-0 py-2 text-sm/6 font-semibold cursor-pointer
+  transition duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]
+  hover:text-orange-400
+  before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0
+  before:bg-gradient-to-r before:from-orange-400 before:to-orange-600
+  before:transition-all before:duration-300
+  before:content-['']
+  hover:before:w-full
+  before:shadow-[0_0_8px_rgba(255,165,0,0.6)]"
             >
               Signup
             </button>
