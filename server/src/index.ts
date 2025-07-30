@@ -8,7 +8,10 @@ import { userBroadcastRouter } from "./routes/userBroadcastRoutes";
 import { adminBroadcastRouter } from "./routes/adminBroadcastRoutes";
 const app = express();
 app.use(express.json());
-app.use(cors()); // TODO: add specific frontend domain to access backend
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));// TODO: add specific frontend domain to access backend
 
 // TODO: use hemlet and express-rate-limiter
 

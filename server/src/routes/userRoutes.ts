@@ -50,7 +50,7 @@ router.post('/login', async (req: Request, res: Response) => {
             id: findUser._id, role: findUser.role
         }, secrets[findUser.role], {expiresIn: '7h'});
         res.cookie("token", token, cookieOptions);
-        return res.status(200).json({message: "Login Successfully", token});
+        return res.status(200).json({message: "Login Successfully", role: findUser.role});
     }catch(e){
         console.error("Login Error: ", e);
         return res.status(500).json({message: "Internal Server Error"});
