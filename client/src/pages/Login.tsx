@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { loginSchema, type LoginType } from "../lib/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { type LoginResponse } from "../types";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,28 +11,41 @@ const Login = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting},
+    formState: { errors, isSubmitting },
   } = useForm<LoginType>({
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(loginSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const onSubmit: SubmitHandler<LoginType> = async (data) => {
-    try{
-        switch (role) {
-          case "admin":
-            navigate("/AdminDashboard");
-            break;
-          case "employee":
-            navigate("/EmployeeDashboard");
-            break;
-          case "user":
-            navigate("/UserDashboard");
-            break;
+  const onSubmit: SubmitHandler<LoginType> = async (data: LoginType) => {
+    try {
+      const res = await axios.post<LoginResponse>(
+        "http://localhost:3000/api/auth/login",
+        data,
+        {
+          withCredentials: true,
         }
-    }catch(e){
-        setError("root", {
-          message: "Invalid email or password",
-        });
+      );
+      const { role } = res.data;
+      switch (role) {
+        case "admin":
+          navigate("/AdminDashboard");
+          break;
+        case "employee":
+          navigate("/EmployeeDashboard");
+          break;
+        case "user":
+          navigate("/UserDashboard");
+          break;
+      }
+    } catch {
+      setError("root", {
+        message: "Invalid email or password",
+      });
     }
   };
 
@@ -39,7 +54,7 @@ const Login = () => {
       <div className="bg-gradient-to-br from-[#000428] via-[#1f1c2c] to-[#6a0572] min-h-screen flex  flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-8 text-center text-4xl font-bold tracking-tight bg-gradient-to-b from-orange-500 to-red-600 bg-clip-text text-transparent">
-            Login to your account
+            Log In
           </h2>
         </div>
 
@@ -101,15 +116,7 @@ const Login = () => {
             Don't have an account?{" "}
             <button
               onClick={() => navigate("/signup")}
-              className="relative text-slate-200 px-0 py-2 text-sm/6 font-semibold cursor-pointer
-  transition duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]
-  hover:text-orange-400
-  before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0
-  before:bg-gradient-to-r before:from-orange-400 before:to-orange-600
-  before:transition-all before:duration-300
-  before:content-['']
-  hover:before:w-full
-  before:shadow-[0_0_8px_rgba(255,165,0,0.6)]"
+              className="relative text-slate-200 px-0 py-2 text-sm/6 font-semibold cursor-pointer transition duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] hover:text-orange-400 before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-gradient-to-r before:from-orange-400 before:to-orange-600 before:transition-all before:duration-300 before:content-[''] hover:before:w-full before:shadow-[0_0_8px_rgba(255,165,0,0.6)]"
             >
               Signup
             </button>
