@@ -21,8 +21,8 @@ router.get('/broadcast', authMiddleware(), async (req: AuthRequest, res: Respons
         if (!allBroadcast.length) return res.status(204).send();
         return res.status(200).json({
             allBroadcast: allBroadcast.map (b => ({
-                message: b.message,
-                createdAt: b.createdAt
+                id: b._id,
+                message: b.message
             })),
         });
     }catch(e){

@@ -1,12 +1,13 @@
-import express, { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import { loginSchema, signupSchema } from "../validations/userValidation";
 import { userModel } from "../models/user";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { secrets } from "../config";
-import { UserInterface } from "../types";
+import { AuthRequest, UserInterface } from "../types";
+import { authMiddleware } from "../middleware/authMiddleware";
 
-const router = express.Router();
+const router = Router();
 
 const cookieOptions = {
     httpOnly: true,
@@ -60,6 +61,18 @@ router.post('/login', async (req: Request, res: Response) => {
 router.post('/logout', (req: Request, res: Response) => {
     res.clearCookie("token");
     return res.status(200).json({message: "Logout Successfully"})
+})
+
+router.get('/me', authMiddleware(), async (req: AuthRequest, res: Response) => {
+    try{
+        const userId = req.user?.id;
+        const user = await userModel.findOne({_id: userId}).lean();
+        if(!user) return res.status(404).json({message: "User not found"});
+        return res.status(200).json({email: user.email, role: user.role});
+    }catch(e){
+        console.error("Login Error: ", e);
+        return res.status(500).json({message: "Internal Server Error"});
+    }
 })
 
 export const userRouter = router;
