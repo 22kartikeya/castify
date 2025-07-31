@@ -24,8 +24,17 @@ export const Navbar = () => {
       <div className="relative space-x-8 z-10">
         <button
           onClick={() => navigate("/login")}
-          className="relative text-white px-0 py-2 text-base font-semibold cursor-pointer 
-          transition-all duration-300 hover:text-orange-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-gradient-to-r before:from-orange-400 before:to-orange-600 before:transition-all before:duration-300 before:content-[''] hover:before:w-full before:shadow-[0_0_8px_rgba(255,165,0,0.6)]"
+          className="
+  relative text-white px-0 py-2 text-base font-semibold cursor-pointer
+  transition duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]
+  hover:text-orange-400
+  before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0
+  before:bg-gradient-to-r before:from-orange-400 before:to-orange-600
+  before:transition-all before:duration-300
+  before:content-['']
+  hover:before:w-full
+  before:shadow-[0_0_8px_rgba(255,165,0,0.6)]
+"
         >
           Sign In
         </button>
