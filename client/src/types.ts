@@ -17,3 +17,8 @@ export interface BannerProps{
     messages: BroadcastMessage[],
     onDismiss?: (broadcastid: string) => void
 }
+
+export interface DashHeader {
+    email: string | null;
+    handlelogout: () => void;
+}
