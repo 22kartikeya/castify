@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 interface AuthState {
-    role: string | null;
+    role: "admin" | "user" | "employee" | null;
     email: string | null;
-    setAuth: (role: string, email: string) => void;
+    setAuth: (role: AuthState["role"], email: string) => void;
     clearAuth: () => void;
 };
 
