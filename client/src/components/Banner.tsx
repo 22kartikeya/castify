@@ -15,14 +15,14 @@ export const Banner = ({ messages, onDismiss }: BannerProps) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
             transition={{ type: "spring", stiffness: 250, damping: 30 }}
-            className="relative isolate flex items-center gap-x-6 overflow-hidden rounded-2xl bg-gradient-to-r from-pink-100 via-pink-200 to-pink-400 px-6 py-3 sm:px-5 shadow-xl text-sm"
+            className="relative isolate flex items-start gap-x-6 overflow-hidden rounded-2xl bg-gradient-to-r from-pink-100 via-pink-200 to-pink-400 px-6 py-3 sm:px-5 shadow-xl text-sm"
           >
             <div className="flex flex-1 flex-wrap items-center gap-x-4 gap-y-2 min-w-0">
-              <p className="font-semibold truncate text-slate-900">
+              <p className="font-semibold text-slate-900 break-words">
                 {msg.message}
               </p>
             </div>
-            <div className="flex">
+            <div className="flex flex-shrink-0">
               <button
                 aria-label="Dismiss"
                 onClick={() => onDismiss?.(msg.id)}

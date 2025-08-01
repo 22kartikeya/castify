@@ -4,9 +4,13 @@ import { loginSchema, type LoginType } from "../lib/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { type LoginResponse } from "../types";
+import { useAuthStore } from "../store/useAuthStore";
+import { Loading } from "../components/ui/Loading";
+import { base_backend_url } from "../config";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -24,13 +28,14 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginType> = async (data: LoginType) => {
     try {
       const res = await axios.post<LoginResponse>(
-        "http://localhost:3000/api/auth/login",
+        `${base_backend_url}/login`,
         data,
         {
           withCredentials: true,
         }
       );
       const { role } = res.data;
+      setAuth(role, data.email);
       switch (role) {
         case "admin":
           navigate("/AdminDashboard");
@@ -51,7 +56,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-[#000428] via-[#1f1c2c] to-[#6a0572] min-h-screen flex  flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_center,_#6a0572,_#1f1c2c,_#000428)] flex  flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-8 text-center text-4xl font-bold tracking-tight bg-gradient-to-b from-orange-500 to-red-600 bg-clip-text text-transparent">
             Log In
@@ -102,7 +107,7 @@ const Login = () => {
                 className="flex w-full justify-center rounded-md bg-gradient-to-b from-orange-500 to-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs cursor-pointer transition-all duration-300 hover:from-amber-400 hover:to-orange-500"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Loading..." : "Log In"}
+                {isSubmitting ? <Loading/> : "Log In"}
               </button>
               {errors.root && (
                 <div className="text-red-500 text-sm mt-1">

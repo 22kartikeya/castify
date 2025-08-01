@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import axios from "axios";
 import type { responseDataShape } from "../types";
+import { base_backend_url } from "../config";
 
 export const useAuthCheck = () => {
     const setAuth = useAuthStore((state) => state.setAuth);
@@ -10,7 +11,7 @@ export const useAuthCheck = () => {
     useEffect(() => {
         const fetchAuth = async () => {
         try {
-            const res = await axios.get<responseDataShape>("http://localhost:3000/api/auth/me", {
+            const res = await axios.get<responseDataShape>(`${base_backend_url}/me`, {
             withCredentials: true,
             });
             const { email, role } = res.data;

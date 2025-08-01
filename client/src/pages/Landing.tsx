@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer";
 
 export const Landing = () => {
   return (
-    <div className="bg-gradient-to-br from-[#000428] via-[#1f1c2c] to-[#6a0572] min-h-screen">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_center,_#6a0572,_#1f1c2c,_#000428)]">
       <main>
         <Hero />
         <Features />

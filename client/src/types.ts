@@ -21,4 +21,21 @@ export interface BannerProps{
 export interface DashHeader {
     email: string | null;
     handlelogout: () => void;
+    handleCreateMessage?: () => void;
 }
+
+export interface TableData {
+  id: string;
+  title: string;
+  message: string;
+  type: string;
+  status: string;
+  role: 'user' | 'admin' | 'employee';
+  updatedAt: string;
+}
+
+export type MessageTableProps = {
+  data: TableData[];
+  onDelete: (id: string) => void;
+  isDeletingId: string | null;
+};
