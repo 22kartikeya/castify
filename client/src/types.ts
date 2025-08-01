@@ -39,3 +39,12 @@ export type MessageTableProps = {
   onDelete: (id: string) => void;
   isDeletingId: string | null;
 };
+
+export interface AuthRouteProps {
+    children: React.ReactNode;
+    requiredRole?: 'user' | 'admin' | 'employee'
+};
+
+export type LoadingProp = {
+  text?: string
+}
