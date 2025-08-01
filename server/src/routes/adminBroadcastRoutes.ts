@@ -41,10 +41,12 @@ router.get('/all-broadcast', authMiddleware(['admin']), async(req: AuthRequest, 
         if(!broadcasts.length) return res.status(204).send();
         return res.status(200).json({
             broadcasts: broadcasts.map((b) => ({
+                id: b._id,
                 title: b.title,
                 type: b.type,
                 status: b.status,
                 role: b.role,
+                message: b.message,
                 updatedAt: new Date(b.updatedAt).toLocaleDateString('en-GB')
             }))
         })
@@ -93,17 +95,18 @@ router.put('/broadcast', authMiddleware(['admin']), async (req: AuthRequest, res
     }
 });
 
-router.delete('/broadcast', authMiddleware(['admin']), async (req: AuthRequest, res: Response) => {
+router.delete('/broadcast/:broadcastId', authMiddleware(['admin']), async (req: AuthRequest, res: Response) => {
     try{
-        const { broadcastId } = req.body;
+        const { broadcastId } = req.params;
         if(!mongoose.Types.ObjectId.isValid(broadcastId)) return res.status(404).json({message: "Invalid broadcast id"});
         const deleteBroadcast = await broadcastModel.findByIdAndDelete(broadcastId);
-        if(!deleteBroadcast) return res.status(200).json({message: "No broadcast found"});
+        if(!deleteBroadcast) return res.status(404).json({message: "No broadcast found"}); // Changed to 404
         return res.status(200).json({message: "Broadcast deleted successfully"});
     }catch(e){
         console.log("Error in deleting broadcast: ", e);
         return res.status(500).json({message: "Internal Server Error"});
     }
 });
+
 
 export const adminBroadcastRouter = router;
