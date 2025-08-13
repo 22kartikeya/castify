@@ -1,12 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { secrets } from "../config";
 import jwt from "jsonwebtoken";
-import { AuthRequest, Roles } from "../types";
-
-type customPayload = {
-    id: Object;
-    role: Roles;
-}
+import { AuthRequest, customPayload } from "../types";
 
 export const authMiddleware = (allowedRoles: string[] = []) => (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies?.token;

@@ -22,4 +22,10 @@ export interface AuthRequest extends Request {
   };
 }
 
+export type customPayload = {
+    id: Object;
+    role: Roles;
+}
+
+
 export type broadcastType = z.infer<typeof broadcastSchema>;
