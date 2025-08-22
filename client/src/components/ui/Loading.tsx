@@ -1,6 +1,4 @@
-type LoadingProp = {
-  text?: string
-}
+import type { LoadingProp } from "../../types";
 
 export const Loading = ({text} : LoadingProp) => {
     return (

@@ -3,7 +3,7 @@ import "./App.css";
 import { Landing } from "./pages/Landing";
 import Login from "./pages/Login";
 import { Navbar } from "./components/Navbar";
-import { Signup } from "./pages/Signup";
+import Signup from "./pages/Signup"
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { UserDashboard } from "./pages/UserDashboard";
 import { EmployeeDashboard } from "./pages/EmployeeDashboard";

@@ -1,10 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore"
-
-interface AuthRouteProps {
-    children: React.ReactNode;
-    requiredRole?: 'user' | 'admin' | 'employee'
-};
+import type { AuthRouteProps } from "../types";
 
 export const AuthRoutes = ({children, requiredRole}: AuthRouteProps) => {
     // primitive selectors are being used here to avoid re-renders
